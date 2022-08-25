@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.3.0'
+}
+
+group 'com.github.justfelipe'
+version '0.1-ALPHA'
+
+tasks.build.dependsOn('shadowJar')
+
+repositories {
+    mavenCentral()
+
+    maven { url = 'https://oss.sonatype.org/content/groups/public/' }
+    maven { url = 'https://jitpack.io/' }
+    maven { url = 'https://repo.hpfxd.com' }
+}
+
+dependencies {
+
+    compileOnly "com.hpfxd.pandaspigot:pandaspigot-api:1.8.8-R0.1-SNAPSHOT"
+
+    compileOnly fileTree('libs')
+
+    compileOnly 'com.github.NextPlugins:NextCash:1.2.7'
+
+    implementation 'fr.mrmicky:fastboard:1.2.1'
+
+    def lombok = 'org.projectlombok:lombok:1.18.24'
+    compileOnly lombok
+    annotationProcessor lombok
+}
+
+bukkit {
+    name = "scoreboard"
+    main = 'com.github.justfelipe.scoreboard.ScoreboardPlugin'
+    author = 'JustFelipe'
+    version = "${project.version}"
+    depend = ['Vault', 'NextCash', 'Factions', 'MassiveCore', 'mcMMO']
+}
+
+shadowJar {
+    archiveName("${project.name}-${project.version}.jar")
+}
+
+compileJava {
+    options.encoding('UTF-8')
+
+    sourceCompatibility('1.8')
+    targetCompatibility('1.8')
+}
